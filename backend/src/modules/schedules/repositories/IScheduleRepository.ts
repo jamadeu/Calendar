@@ -8,4 +8,5 @@ export default interface IScheduleRepository {
   update(schedule: Schedule): Promise<Schedule>;
   findAllInDay(data: IFindAllInDayDTO): Promise<Schedule[]>;
   findAllInMonth(date: IFindAllInMonthDTO): Promise<Schedule[]>;
+  findByDate(date: Date): Promise<Schedule | undefined>;
 }
