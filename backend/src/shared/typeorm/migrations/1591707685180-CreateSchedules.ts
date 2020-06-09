@@ -24,7 +24,7 @@ export default class CreateSchedules1591707685180
           },
           {
             name: 'info',
-            type: 'timestamp with time zone',
+            type: 'varchar',
           },
           {
             name: 'created_at',
