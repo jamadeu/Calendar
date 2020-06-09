@@ -1,5 +1,5 @@
 import { uuid } from 'uuidv4';
-import { isEqual, getDate, getMonth, getYear } from 'date-fns';
+import { isEqual, getDate, getMonth, getYear, startOfDay } from 'date-fns';
 import IScheduleRepository from '@modules/schedules/repositories/IScheduleRepository';
 import ICreateScheduleDTO from '@modules/schedules/dtos/ICreateScheduleDTO';
 import IFindALlInDayDTO from '@modules/schedules/dtos/IFindAllInDayDTO';
@@ -9,9 +9,13 @@ import Schedule from '@modules/schedules/typeorm/entities/Schedule';
 class FakeScheduleRepository implements IScheduleRepository {
   private schedules: Schedule[] = [];
 
-  public async create(data: ICreateScheduleDTO): Promise<Schedule> {
+  public async create({
+    start,
+    end,
+    info,
+  }: ICreateScheduleDTO): Promise<Schedule> {
     const schedule = new Schedule();
-    Object.assign(schedule, { id: uuid, data });
+    Object.assign(schedule, { id: uuid, start, end, info });
     this.schedules.push(schedule);
     return schedule;
   }
@@ -24,8 +28,10 @@ class FakeScheduleRepository implements IScheduleRepository {
     return schedule;
   }
 
-  public async findByDate(date: Date): Promise<Schedule | undefined> {
-    return this.schedules.find(schedule => isEqual(schedule.start, date));
+  public async findByDate(date: Date): Promise<Schedule[]> {
+    return this.schedules.filter(schedule =>
+      isEqual(startOfDay(schedule.start), startOfDay(date)),
+    );
   }
 
   public async findAllInDay({
