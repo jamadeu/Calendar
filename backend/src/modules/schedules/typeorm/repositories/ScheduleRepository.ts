@@ -34,10 +34,6 @@ class ScheduleRepository implements IScheduleRepository {
   }: IFindAllInMonthDTO): Promise<Schedule[]> {
     // TODO
   }
-
-  public async findByDate(date: Date): Promise<Schedule | undefined> {
-    // TODO
-  }
 }
 
 export default ScheduleRepository;

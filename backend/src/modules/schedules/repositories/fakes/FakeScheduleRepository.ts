@@ -1,5 +1,5 @@
 import { uuid } from 'uuidv4';
-import { isEqual, getDate, getMonth, getYear, startOfDay } from 'date-fns';
+import { getDate, getMonth, getYear } from 'date-fns';
 import IScheduleRepository from '@modules/schedules/repositories/IScheduleRepository';
 import ICreateScheduleDTO from '@modules/schedules/dtos/ICreateScheduleDTO';
 import IFindALlInDayDTO from '@modules/schedules/dtos/IFindAllInDayDTO';
@@ -28,12 +28,6 @@ class FakeScheduleRepository implements IScheduleRepository {
     return schedule;
   }
 
-  public async findByDate(date: Date): Promise<Schedule[]> {
-    return this.schedules.filter(schedule =>
-      isEqual(startOfDay(schedule.start), startOfDay(date)),
-    );
-  }
-
   public async findAllInDay({
     day,
     month,
@@ -42,7 +36,7 @@ class FakeScheduleRepository implements IScheduleRepository {
     return this.schedules.filter(schedule => {
       return (
         getDate(schedule.start) === day &&
-        getMonth(schedule.start) + 1 === month &&
+        getMonth(schedule.start) === month &&
         getYear(schedule.start) === year
       );
     });
